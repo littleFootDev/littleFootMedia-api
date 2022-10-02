@@ -10,4 +10,6 @@ export interface IUser extends mongoose.Document {
     followers?: string[];
     followin?: string[];
     likes?: string[];
+
+    comparePassword(password: string): Promise<boolean>;
 }

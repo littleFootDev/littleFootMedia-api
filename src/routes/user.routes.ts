@@ -1,10 +1,12 @@
 import {Router} from 'express';
-import {signUp} from '../controllers/auth.controller';
+import {signUp,signIn, signOut} from '../controllers/auth.controller';
 import {getAllUsers, userInfo,  updateUser, deleteUser, follow, unFollow} from '../controllers/user.controller';
 
 const userRouter= Router();
 
 userRouter.post("/register",signUp);
+userRouter.post("/login", signIn);
+userRouter.get("/logout", signOut);
 
 
 userRouter.get("/", getAllUsers);
