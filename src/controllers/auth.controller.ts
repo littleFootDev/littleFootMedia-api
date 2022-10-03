@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken"
 import dotenv from 'dotenv';
 
 import {UserModel } from '../models/users/User.models';
-import {signUpError} from '../helpers/utils/errors.utils';
+import {signUpError, signInErrors} from '../helpers/utils/errors.utils';
 
 dotenv.config();
  const secretToken = process.env.TOKEN_SECRET
@@ -20,7 +20,7 @@ const signUp: RequestHandler = async(req, res) => {
         const user = await UserModel.create(body);
         res.status(201).json({user: user._id});
     } catch (err) {
-
+        const errors = signUpError(err);
         res.status(200).json({err});
     }
 };
@@ -45,7 +45,7 @@ const signIn: RequestHandler = async(req, res) => {
         }
 
     } catch (err) {
-        const errors = signUpError(err);
+        const errors = signInErrors(err);
         res.status(200).json({errors});
     }
 }
