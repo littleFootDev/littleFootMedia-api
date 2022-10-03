@@ -8,8 +8,8 @@ const userSchema : mongoose.Schema<IUser> = new mongoose.Schema({
     pseudo: {
         type : String,
         required: true,
-        minLength:6,
-        maxLength:20,
+        minlength:6,
+        maxlength:20,
         unique: true,
         trim: true,
     },

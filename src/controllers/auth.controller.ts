@@ -2,7 +2,8 @@ import { RequestHandler } from 'express';
 import jwt from "jsonwebtoken"
 import dotenv from 'dotenv';
 
-import {UserModel } from '../models/users/User.models'
+import {UserModel } from '../models/users/User.models';
+import {signUpError} from '../helpers/utils/errors.utils';
 
 dotenv.config();
  const secretToken = process.env.TOKEN_SECRET
@@ -44,7 +45,8 @@ const signIn: RequestHandler = async(req, res) => {
         }
 
     } catch (err) {
-        res.status(200).json({err});
+        const errors = signUpError(err);
+        res.status(200).json({errors});
     }
 }
 
