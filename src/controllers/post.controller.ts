@@ -68,5 +68,71 @@ const deletePost: RequestHandler = async(req, res) => {
     )
 };
 
+const likePost: RequestHandler = async(req, res) => {
+    if(!req.params.id) {
+        return res.status(400).json('ID Unknown : ' + req.params.id);
+    };
 
-export {readPost, createPost, updatePost, deletePost};
+    try {
+        await PostModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $addToSet : {likers: req.body.id}
+            },
+            {new: true},
+            (err, _) => {
+                if(err) return res.status(400).json({message: err})
+            }
+        );
+
+        await UserModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $addToSet : {likers: req.body.id}
+            },
+            {new: true},
+            (err, docs) => {
+                if(!err) return res.send(docs);
+                else return res.status(400).send(err)
+            }
+        )
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+};
+
+const unLikePost: RequestHandler = async(req, res) => {
+    if(!req.params.id) {
+        return res.status(400).json('ID Unknown : ' + req.params.id);
+    };
+
+    try {
+        await PostModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $pull : {likers: req.body.id}
+            },
+            {new: true},
+            (err, _) => {
+                if(err) return res.status(400).json({message: err})
+            }
+        );
+
+        await UserModel.findByIdAndUpdate(
+            req.params.id,
+            {
+                $pull : {likers: req.body.id}
+            },
+            {new: true},
+            (err, docs) => {
+                if(!err) return res.send(docs);
+                else return res.status(400).send(err)
+            }
+        )
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+};
+
+
+export {readPost, createPost, updatePost, deletePost, likePost, unLikePost};
