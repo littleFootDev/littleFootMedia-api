@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 
 import {userRouter} from './routes/user.routes'
 import {checkUser, requireAuth} from './helpers/middleware/auth.middleware'
+import {postRouter} from './routes/post.routes';
 
 dotenv.config();
 const port = process.env.PORT;
@@ -24,6 +25,7 @@ function middleware(app: express.Application) {
         res.status(200).send(res.locals.user._id);
     });
     app.use("/api/users", userRouter);
+    app.use('/api/post', postRouter)
 }
 
 async function startServer(app:express.Application) {
