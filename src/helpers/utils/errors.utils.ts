@@ -21,7 +21,7 @@ const signUpError = (err: any)=>{
     return errors;
 };
 
-const signInErrors = (err) => {
+const signInErrors = (err:any) => {
     let errors = {email: '', password: ''};
 
     if(err.message.includes("email"))
