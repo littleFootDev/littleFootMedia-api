@@ -21,6 +21,22 @@ const checkUser: RequestHandler = (req, res, next) => {
         res.locals.user = null;
         next();
     }
+};
+
+const requireAuth: RequestHandler = async(req, res, next) => {
+    const token = req.cookies.jwt;
+
+    if(token) {
+        jwt.verify(token, process.env.TOKEN_SECRET!, async(err:any, decodedToken: any) =>{
+            if(err) {
+                console.log(err);
+            } else {
+                console.log(decodedToken.id);
+                next();
+            }
+        });
+    } else console.log('No token');
+    
 }
 
-export {checkUser}
+export {checkUser, requireAuth}
