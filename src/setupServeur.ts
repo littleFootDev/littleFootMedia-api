@@ -1,8 +1,10 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import {json} from 'body-parser';
+import cookieParser from 'cookie-parser';
 
 import {userRouter} from './routes/user.routes'
+import {checkUser, requireAuth} from './helpers/middleware/auth.middleware'
 
 dotenv.config();
 const port = process.env.PORT;
@@ -16,6 +18,11 @@ async function serverSetup() {
 
 function middleware(app: express.Application) {
     app.use(json());
+    app.use(cookieParser());
+    app.get('*', checkUser);
+    app.get('/jwtid', requireAuth, (req, res) => {
+        res.status(200).send(res.locals.user._id);
+    });
     app.use("/api/users", userRouter);
 }
 

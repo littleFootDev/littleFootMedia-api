@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import {hash} from 'bcryptjs';
+import {hash, compare} from 'bcryptjs';
 import isEmail from 'validator'
 
 import { IUser } from '../../interface/user.interface';
@@ -8,8 +8,8 @@ const userSchema : mongoose.Schema<IUser> = new mongoose.Schema({
     pseudo: {
         type : String,
         required: true,
-        minLength:6,
-        maxLength:20,
+        minlength:6,
+        maxlength:20,
         unique: true,
         trim: true,
     },
@@ -53,7 +53,14 @@ userSchema.pre("save", async function(this: IUser, next) {
 
     this.password = hashPassword;
     next();
-})
+});
+
+
+userSchema.methods.comparePassword = function (password: string) : Promise<boolean>{
+    const hashedPassword : string = (this as IUser).password;
+
+    return compare(password, hashedPassword);
+}
 
 
 export {userSchema};
