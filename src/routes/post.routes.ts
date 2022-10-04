@@ -1,10 +1,14 @@
 import {Router} from 'express';
+import multer from 'multer';
+
 import {readPost, createPost, updatePost, deletePost, likePost, unLikePost, commentPost, editCommentPost, deleteCommentPost} from '../controllers/post.controller';
 
+
 const postRouter = Router();
+const upload = multer();
 
 postRouter.get('/', readPost);
-postRouter.post('/', createPost);
+postRouter.post('/', upload.single("file"), createPost);
 postRouter.put('/:id', updatePost);
 postRouter.delete('/:id', deletePost);
 postRouter.patch('/like-post/:id', likePost);
