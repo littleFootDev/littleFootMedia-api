@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import {json} from 'body-parser';
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
 
 import {userRouter} from './routes/user.routes'
 import {checkUser, requireAuth} from './helpers/middleware/auth.middleware'
@@ -9,7 +10,14 @@ import {postRouter} from './routes/post.routes';
 
 dotenv.config();
 const port = process.env.PORT;
-
+const corsOptions = {
+    origin: process.env.CLIENT_URL,
+    credential: true,
+    'allowedHeaders' : ['sessionId', 'Content-Type'],
+    'exposedHeaders' : ['sessionId'],
+    'methods' : 'GET, POST, PUT, DELETE, PATCH, HEAD',
+    'preflightContinue' : false
+}
 
 async function serverSetup() {
     const app:express.Application = express();
@@ -18,6 +26,7 @@ async function serverSetup() {
 };
 
 function middleware(app: express.Application) {
+    app.use(cors(corsOptions));
     app.use(json());
     app.use(cookieParser());
     app.get('*', checkUser);
