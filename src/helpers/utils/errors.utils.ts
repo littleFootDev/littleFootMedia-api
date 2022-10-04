@@ -1,5 +1,7 @@
 import { RequestHandler} from 'express'
 
+
+
 const signUpError = (err: any)=>{
     let errors = {pseudo: '', email: '', password: ''};
 
@@ -31,5 +33,14 @@ const signInErrors = (err:any) => {
         errors.password = "Le mot de passe ne correspond pas!";
 }
 
+const uploadErrors = (err:any) => {
+    let errors = {format: '', maxSize: ''};
 
-export {signUpError, signInErrors}
+    if(err.message.includes("Invalid file"))
+        errors.format = "Fromat incompatible";
+    
+    if(err.message.includes("Max size"))
+        errors.maxSize = "Le fichier dépasse 500ko";
+
+}
+export {signUpError, signInErrors, uploadErrors}
