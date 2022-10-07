@@ -1,13 +1,13 @@
 import { RequestHandler } from 'express';
 //import {ObjectId} from 'mongoose';
-import fs from 'fs';
+//import fs from 'fs';
 import { promisify } from 'util';
 
 import {PostModel} from '../models/posts/Post.models';
 import {UserModel} from '../models/users/User.models';
-import { uploadErrors } from '../helpers/utils/errors.utils';
+//import { uploadErrors } from '../helpers/utils/errors.utils';
 
-const pipeline = promisify(require('stream').pipeline);
+//const pipeline = promisify(require('stream').pipeline);
 
 
 const readPost: RequestHandler = async(req, res) => {
@@ -21,30 +21,30 @@ const readPost: RequestHandler = async(req, res) => {
 };
 
 const createPost: RequestHandler = async(req, res) => {
-    let fileName;
+    // let fileName;
 
-    if(req.file !== null) {
-        try {
-            if(req.file!.detectedMineType !== 'image/jpg',
-             req.file!.detectedMineType !== 'image/png', 
-             req.file!.detectedMineType !== 'image/jpeg')
-                throw Error("Invalid file");
+    // if(req.file !== null) {
+    //     try {
+    //         if(req.file!.detectedMineType !== 'image/jpg',
+    //          req.file!.detectedMineType !== 'image/png', 
+    //          req.file!.detectedMineType !== 'image/jpeg')
+    //             throw Error("Invalid file");
 
-            if(req.file!.size > 500000 )  throw Error("Max size")
-        } catch (err) {
-            const errors = uploadErrors(err);
-            res.status(201).json({errors});
-        }
+    //         if(req.file!.size > 500000 )  throw Error("Max size")
+    //     } catch (err) {
+    //         const errors = uploadErrors(err);
+    //         res.status(201).json({errors});
+    //     }
     
-        fileName = req.body.posterId + Date.now() + '.jpg';
-    }
+    //     fileName = req.body.posterId + Date.now() + '.jpg';
+    // }
 
-    await pipeline(
-        req.file?.stream,
-        fs.createWriteStream(
-            `${__dirname}/../client/public/uploads/posts/${fileName}`
-        )
-    );
+    // await pipeline(
+    //     req.file?.stream,
+    //     fs.createWriteStream(
+    //         `${__dirname}/../client/public/uploads/posts/${fileName}`
+    //     )
+    // );
 
 
 
@@ -52,7 +52,7 @@ const createPost: RequestHandler = async(req, res) => {
     const newPost = new PostModel({
         posterId: req.body.posterId,
         message: req.body.message,
-        picture: req.file !== null ? "./uploads/posts/" + fileName : "",
+        //picture: req.file !== null ? "./uploads/posts/" + fileName : "",
         video: req.body.video,
         likers: [],
         comments: [],

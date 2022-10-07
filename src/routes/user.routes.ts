@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import {signUp,signIn, signOut} from '../controllers/auth.controller';
 import {getAllUsers, userInfo,  updateUser, deleteUser, follow, unFollow} from '../controllers/user.controller';
-import {uploadProfil} from '../controllers/upload.controller';
+//import {uploadProfil} from '../controllers/upload.controller';
 import multer from 'multer'
 
 const userRouter= Router();
@@ -21,7 +21,7 @@ userRouter.patch("/follow/:id", follow);
 userRouter.patch("/unfollow/:id", unFollow);
 
 //upload
-userRouter.post("/upload",upload.single('file'), uploadProfil);
+//userRouter.post("/upload",upload.single('file'), uploadProfil);
 
 
 export {userRouter};
